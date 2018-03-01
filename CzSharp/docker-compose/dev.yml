@@ -1,0 +1,24 @@
+version: '3'
+services:
+  db:
+    image: 'mysql:latest'
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: dbroot
+      MYSQL_DATABASE: czsharp
+      MYSQL_USER: czsharp
+      MYSQL_PASSWORD: czsharp
+  czsharp:
+    build: ../.
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      DOTNET_USE_POLLING_FILE_WATCHER: 1
+    volumes:
+      - "..:/code/app"
+      - "$HOME/.microsoft/usersecrets:/root/.microsoft/usersecrets/"
+    links:
+      - db
+    ports:
+      - "5001:5000"

@@ -1,0 +1,51 @@
+h1 {
+  font-size: 2rem; }
+
+h2 {
+  font-size: 1.5rem; }
+
+h3 {
+  font-size: 1.2rem; }
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+  padding-left: 15px;
+  padding-right: 15px; }
+
+/* Carousel */
+.carousel-caption p {
+  font-size: 20px;
+  line-height: 1.4; }
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+  width: 100%; }
+
+/* QR code generator */
+#qrCode {
+  margin: 15px; }
+
+.small-z {
+  font-size: 13px; }
+
+.navbar-light .navbar-brand {
+  color: purple; }
+
+.title-net {
+  color: #009100; }
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+  /* Hide captions */
+  .carousel-caption {
+    display: none; } }
+#small-calendar h2 {
+  font-size: 1.1rem;
+  color: black; }
+#small-calendar .fc-day-header.fc-widget-header {
+  font-size: 0.8rem; }
+#small-calendar .fc-day-top {
+  font-size: 0.8rem; }
+
+/*# sourceMappingURL=site.css.map */

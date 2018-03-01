@@ -1,0 +1,33 @@
+﻿@model RegistrationViewModel
+
+@{
+    ViewBag.Title = "Registrace";
+    Layout = "_FrontendLayout";
+}
+
+<h2>Registrace</h2>
+@using (@Html.BeginForm("CreateAccount", "Users", FormMethod.Post))
+{
+    @Html.ValidationSummary()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Username)
+        @Html.EditorFor(m => m.Username, new { htmlAttributes = new {@class = "form-control" } })
+        <div class="invalid-feedback">@Html.ValidationMessageFor(m => m.Username)</div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.EditorFor(m => m.Email, new { htmlAttributes = new {@class = "form-control" } })
+        <div class="invalid-feedback">@Html.ValidationMessageFor(m => m.Email)</div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password)
+        @Html.EditorFor(m => m.Password, new { htmlAttributes = new {@class = "form-control" } })
+        <div class="invalid-feedback">@Html.ValidationMessageFor(m => m.Password)</div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PasswordAgain)
+        @Html.EditorFor(m => m.PasswordAgain, new { htmlAttributes = new {@class = "form-control" } })
+        <div class="invalid-feedback">@Html.ValidationMessageFor(m => m.PasswordAgain)</div>
+    </div>
+    <button type="submit" class="btn btn-success">Vytvořit účet</button>
+}

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<CzSharp.ViewModels.UserWithRolesViewModel>
+@{
+    ViewBag.Title = "Uživatelé";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Uživatelské jméno</th>
+        <th>E-mail</th>
+        <th>Role</th>
+        <th>Aktivní</th>
+        <th>Akce</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.User.Id</td>
+            <td>@user.User.UserName</td>
+            <td>@user.User.Email</td>
+            <td>@string.Join(",", user.UserRoles)</td>
+            <td>
+                @if (@user.User.EmailConfirmed)
+                {
+                    <span class="badge badge-success">Aktivní</span>
+                }
+                else
+                {
+                    <span class="badge badge-warning">Neaktvní</span>
+                }
+            </td>
+            <td></td>
+        </tr>
+    }
+</table>
