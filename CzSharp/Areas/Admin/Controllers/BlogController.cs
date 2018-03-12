@@ -17,23 +17,5 @@ namespace CzSharp.Areas.Admin.Controllers
             return
             View();
         }
-
-        public IActionResult Article(int id = default(int))
-        {
-            return View(new ArticleViewModel
-            {
-                Article = id == default(int) ? new Article() : DbContext.Articles.Find(id),
-                Categories = DbContext.Categories.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Title
-                }),
-                Tags = DbContext.Tags.Select(t => new SelectListItem
-                {
-                    Value = t.Id.ToString(),
-                    Text = t.Title
-                })
-            });
-        }
     }
 }

@@ -1,0 +1,24 @@
+﻿@using CzSharp.Utils.Extensions
+@model CzSharp.Model.Entities.Code
+
+@{
+    ViewBag.Title = @Model.Title;
+    Layout = "_Layout";
+}
+
+<h2>@Model.Title</h2>
+<div>@Html.Raw(@Model.Description)</div>
+@Html.AceEditorFor(c => c.CodeSample, true)
+<div class="row mb-2 justify-content-end">
+    <span class="badge badge-info mr-2"><i class="far fa-clock"></i> @Model.Created</span>
+    <span class="badge badge-primary"><i class="far fa-user"></i> @Model.User?.UserName</span>
+</div>
+<div class="row justify-content-end">
+    @foreach (var tag in Model.CodeTags.Select(ct => ct.Tag.Title))
+    {
+        <span class="badge badge-info">@tag</span>
+    }
+</div>
+@section Scripts {
+    <script src="~/lib/ace/ace.js"></script>
+}

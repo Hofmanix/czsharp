@@ -25,12 +25,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AceEditor.cs" />
     <Compile Include="App.cs" />
-    <Compile Include="Calendars.cs" />
-    <Compile Include="Editors.cs" />
+    <Compile Include="Confirms.cs" />
+    <Compile Include="DateTimePicker\DatePickers.cs" />
+    <Compile Include="DateTimePicker\DateTimePickerExtensions.cs" />
     <Compile Include="Forms.cs" />
+    <Compile Include="FullCalendar\Calendars.cs" />
+    <Compile Include="FullCalendar\FullCalendarEvent.cs" />
     <Compile Include="FullCalendar\FullCalendarExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tags\TagsInput.cs" />
+    <Compile Include="Tags\TagsInputOptions.cs" />
+    <Compile Include="Tags\TagsInputExtensions.cs" />
+    <Compile Include="Tags\TypeAheadOptions.cs" />
+    <Compile Include="TinyMce\Editors.cs" />
+    <Compile Include="TinyMce\TinyMceSettings.cs" />
+    <Compile Include="Tooltips.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Bridge">
@@ -41,6 +52,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Bridge.Newtonsoft.Json.1.5.0\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Retyped.ace, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Retyped.ace.0.1.6556\lib\net40\Retyped.ace.dll</HintPath>
     </Reference>
     <Reference Include="Retyped.Core">
       <HintPath>..\packages\Retyped.Core.1.4.6556\lib\net40\Retyped.Core.dll</HintPath>

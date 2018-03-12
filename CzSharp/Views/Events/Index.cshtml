@@ -1,0 +1,15 @@
+﻿@using CzSharp.Model.Entities
+@{
+    ViewBag.Title = "Akce";
+}
+
+<h2>@ViewBag.Title</h2>
+@if (User.IsInRole(UserRole.EventCreator) || User.IsInRole(UserRole.Administrator))
+{
+    <div class="row justify-content-end">
+        <a class="btn btn-primary btn-sm" href="@Url.Action("Create")">
+            <i class="fa fa-plus"></i> Přidat akci
+        </a>
+    </div>
+}
+<div class="mt-2" id="calendar"></div>

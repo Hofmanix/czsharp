@@ -1,4 +1,8 @@
 ﻿using Bridge;
+using WebScripts.DateTimePicker;
+using WebScripts.Tags;
+using WebScripts.TinyMce;
+using WebScripts.FullCalendar;
 
 [assembly:Convention(Notation.LowerCamelCase)]
 namespace WebScripts
@@ -10,6 +14,11 @@ namespace WebScripts
             var calendars = new Calendars();
             var forms = new Forms();
             var editors = new Editors();
+            var tooltips = new Tooltips();
+            var confirms = new Confirms();
+            var ace = new AceEditor();
+            var tags = new TagsInput();
+            var datePickers = new DatePickers();
         }
        
     }

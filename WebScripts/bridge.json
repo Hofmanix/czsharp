@@ -18,7 +18,7 @@
   // Enable the Bridge Console.
   // Default is false.
   "console": {
-    "enabled": true
+    "enabled": false
   },
 
   // Enable browser debugging of C# files.
@@ -30,7 +30,7 @@
   // Set to true to disable Reflection metadata generation.
   // Default is false.
   "reflection": {
-    "disabled": true
+    "disabled": false
   },
 
   // Generate TypeScript Definition (.d.ts) files.
@@ -46,7 +46,6 @@
   "report": {
     "enabled": false
   },
-  "combineScripts": true,
 
   // Rules to manage generated JavaScript syntax.
   // Default is "Managed"

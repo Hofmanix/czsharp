@@ -7,6 +7,12 @@ h2 {
 h3 {
   font-size: 1.2rem; }
 
+.fc-basic-view .fc-body .fc-row {
+  min-height: 30px !important; }
+
+.fc-day-grid-event .fc-content {
+  cursor: pointer; }
+
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -47,5 +53,32 @@ h3 {
   font-size: 0.8rem; }
 #small-calendar .fc-day-top {
   font-size: 0.8rem; }
+
+div[data-editor="ace"] {
+  width: 100%;
+  height: 400px; }
+
+.article-content-preview {
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 2rem; }
+
+.topic-row {
+  border-top: 1px solid #343a40;
+  border-bottom: 1px solid #343a40;
+  padding: 0.5rem; }
+  .topic-row p {
+    margin-bottom: 0; }
+
+.topic-col h4 {
+  font-size: 1.2rem; }
+
+.topic-row:hover {
+  text-decoration: none !important;
+  border-color: #1d2124 !important; }
+
+.contribution-user-info {
+  width: 100px; }
 
 /*# sourceMappingURL=site.css.map */

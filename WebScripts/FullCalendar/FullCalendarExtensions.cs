@@ -7,7 +7,7 @@ namespace WebScripts.FullCalendar
     [Namespace(false)]
     public static class FullCalendarExtensions
     {
-        public static void FullCalendar(this jquery.JQuery jQuery, object options)
+        public static void FullCalendar(this jquery.JQuery jQuery, object options = null)
         {
             return;
         }

@@ -1,0 +1,25 @@
+﻿@model CzSharp.Model.Entities.Event
+
+@{
+    ViewBag.Title = @Model.Title;
+}
+
+<h2>@ViewBag.Title</h2>
+<span class="badge badge-primary">
+    <i class="far fa-clock"></i> @Model.From - @Model.To
+</span>
+<br>
+<span class="badge badge-info">
+    <i class="far fa-map"></i> @Model.Address
+</span>
+<div class="m-2">@Html.Raw(Model.Info)</div>
+<div class="row mb-2 justify-content-end">
+    <span class="badge badge-info mr-2"><i class="far fa-clock"></i> @Model.Created</span>
+    <span class="badge badge-primary"><i class="far fa-user"></i> @Model.User.UserName</span>
+</div>
+<div class="row justify-content-end">
+    @foreach (var tag in Model.EventTags.Select(t => t.Tag))
+    {
+        <span class="badge badge-info">@tag.Title</span>
+    }
+</div>

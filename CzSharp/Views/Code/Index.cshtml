@@ -1,0 +1,44 @@
+﻿@using CzSharp.Model.Entities
+@model CodesViewModel
+@{
+    ViewBag.Title = "Ukázky kódu";
+}
+
+<h2>@ViewBag.Title</h2>
+@if (User.IsInRole(UserRole.Coder) || User.IsInRole(UserRole.Administrator))
+{
+    <div class="row justify-content-end">
+        <a class="btn btn-primary btn-sm text-light" href="@Url.Action("Create")"><i class="fa fa-plus"></i> Přidat nový kód</a>
+    </div>
+}
+<div class="list-group">
+    @foreach (var code in Model.Codes)
+    {
+        <a href="@Url.Action("Detail", new {id = code.Id})" class="list-group-item text-dark border-left-0 border-right-0">
+            @code.Title
+            <div class="row mb-2 justify-content-end">
+                <span class="badge badge-info mr-2"><i class="far fa-clock"></i> @code.Created</span>
+                <span class="badge badge-primary"><i class="far fa-user"></i> @code.User?.UserName</span>
+            </div>
+            <div class="row justify-content-end">
+                @foreach (var tag in code.CodeTags.Select(t => t.Tag))
+                {
+                    <span class="badge badge-info">@tag.Title</span>
+                }
+            </div>
+        </a>
+    }
+</div>
+@if (Model.CodeCount > 10)
+{
+    <nav aria-label="Articles navigation" class="row mt-2 justify-content-around">
+        <ul class="pagination">
+            @for (var i = 0; i < Math.Ceiling(Model.CodeCount / 10d); i++)
+            {
+                <li class='page-item @(Model.ActivePage == (i + 1) ? "active" : "")'>
+                    <a class="page-link" href="@Url.Action("Index", new {page = (i + 1)})">@(i + 1)</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

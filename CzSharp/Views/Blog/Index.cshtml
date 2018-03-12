@@ -1,0 +1,55 @@
+﻿@using CzSharp.Model.Entities
+@model ArticlesViewModel
+@{
+    ViewBag.Title = "Blog";
+}
+
+<h2>@ViewBag.Title</h2>
+@if (User.IsInRole(UserRole.Administrator) || User.IsInRole(UserRole.Blogger) || User.IsInRole(UserRole.SeniorBlogger))
+{
+    <div class="row justify-content-end">
+        <a class="btn btn-primary btn-sm" href="@Url.Action("Create")"><i class="fa fa-plus"></i> Přidat článek</a>
+    </div>
+
+}
+<div class="list-group mt-2" id="articles">
+    @foreach (var article in Model.Articles)
+    {
+        <a class="list-group-item border-left-0 border-right-0 text-dark" href="@Url.Action("Detail", new {id = article.Id})">
+            <div class="row">
+                <div class="col-3">
+                    <img class="img-thumbnail rounded"/>
+                </div>
+                <div class="col-9">
+                    <h3 class="article-title">@article.Title</h3>
+                    <div class="article-content-preview">
+                        @Html.Raw(article.Content)
+                    </div>
+                    <div class="row mb-2 justify-content-end">
+                        <span class="badge badge-info mr-2"><i class="far fa-clock"></i> @article.Created</span>
+                        <span class="badge badge-primary"><i class="far fa-user"></i> @article.User?.UserName</span>
+                    </div>
+                    <div class="row justify-content-end">
+                        @foreach (var tag in article.ArticleTags.Select(t => t.Tag))
+                        {
+                            <span class="badge badge-info">@tag.Title</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </a>
+    }
+</div>
+@if (Model.ArticlesCount > 10)
+{
+    <nav aria-label="Articles navigation" class="row mt-2 justify-content-around">
+        <ul class="pagination">
+            @for (var i = 0; i < Math.Ceiling(Model.ArticlesCount / 10d); i++)
+            {
+                <li class='page-item @(Model.ActivePage == (i + 1) ? "active" : "")'>
+                    <a class="page-link" href="@Url.Action("Index", new {page = (i + 1)})">@(i + 1)</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

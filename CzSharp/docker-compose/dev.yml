@@ -1,20 +1,27 @@
 version: '3'
 services:
   db:
-    image: 'mysql:latest'
+    image: 'postgres:alpine'
     volumes:
-      - ./dbdata:/var/lib/mysql
+      - ./dbdata:/var/lib/postgresql/data
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: dbroot
-      MYSQL_DATABASE: czsharp
-      MYSQL_USER: czsharp
-      MYSQL_PASSWORD: czsharp
+      POSTGRES_PASSWORD: czsharp
+      POSTGRES_DB: czsharp
+      POSTGRES_USER: czsharp
+  pgadmin:
+    image: 'thajeztah/pgadmin4'
+    ports: 
+      - "5050:5050"
+    links:
+      - db
+    volumes:
+      - ./pgadmin:/pgadmin
   czsharp:
     build: ../.
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      DOTNET_USE_POLLING_FILE_WATCHER: 1
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
     volumes:
       - "..:/code/app"
       - "$HOME/.microsoft/usersecrets:/root/.microsoft/usersecrets/"

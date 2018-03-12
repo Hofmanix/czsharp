@@ -1,0 +1,93 @@
+﻿@using CzSharp.Model.Entities
+@using CzSharp.Utils.Extensions
+@model ForumIndexViewModel
+
+@{
+    ViewBag.Title = "Forum";
+}
+
+@if (User.IsInRole(UserRole.Administrator) || User.IsInRole(UserRole.Moderator))
+{
+    <div class="row justify-content-end mt-2">
+        <button class="btn btn-sm btn-info text-light mr-1" data-toggle="collapse" data-target="#new-topic-group"><i class="fa fa-plus"></i> Přidat skupinu témat</button>
+        <button class="btn btn-sm btn-primary float-right" data-toggle="collapse" data-target="#new-topic"><i class="fa fa-plus"></i> Přidat nové téma</button>
+    </div>
+    
+    <div class='collapse m-2 @(Context.Request.Path.Value.Contains("createtopicgroup") ? "show" : "")' id="new-topic-group">
+        <div class="card">
+            <div class="card-header">Nová skupina témat</div>
+            <div class="card-body">
+                @using (Html.BeginForm("CreateTopicGroup", "Forum", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.NewTopicGroup.Title)
+                        @Html.EditorFor(m => m.NewTopicGroup.Title, new {htmlAttributes = new {@class = "form-control"}})
+                        <div class="invalid-feedback">@Html.ValidationMessageFor(m => m.NewTopicGroup.Title)</div>
+                    </div>
+                    <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> Přidat novou skupinu</button>
+                }
+            </div>
+        </div>
+    </div>
+    <div class='collapse m-2 @(Context.Request.Path.Value.Contains("createtopic") ? "show" : "")' id="new-topic">
+        <div class="card">
+            <div class="card-header">Nové téma</div>
+            <div class="card-body">
+                @using (Html.BeginForm("CreateTopic", "Forum", FormMethod.Post))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.NewTopic.Title)
+                        @Html.EditorFor(m => m.NewTopic.Title, new {htmlAttributes = new {@class = "form-control"}})
+                        <div class="invalid-feedback">@Html.ValidationMessageFor(m => m.NewTopic.Title)</div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.SelectedTopicGroup)
+                        @Html.DropDownListFor(m => m.SelectedTopicGroup, Model.TopicGroups.Select(t => new SelectListItem
+                        {
+                            Text = t.Title,
+                            Value = t.Id.ToString()
+                        }).ToList(), new {@class = "form-control"})
+                        <div class="invalid-feedback">@Html.ValidationMessageFor(m => m.SelectedTopicGroup)</div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.NewTopic.Info)
+                        @Html.TinyMceFor(m => m.NewTopic.Info)
+                        <div class="invalid-feedback">@Html.ValidationMessageFor(m => m.NewTopic.Info)</div>
+                    </div>
+                    <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> Přidat nové téma</button>
+                }
+            </div>
+        </div>
+    </div>
+}
+<h2>@ViewBag.Title</h2>
+@foreach (var topicGroup in Model.TopicGroups)
+{
+    <div class="topic">
+        <h3>@topicGroup.Title</h3>
+        <table class="table">
+            <tr>
+                <th>Témata</th>
+                <th>Diskuse</th>
+                <th>Příspěvky</th>
+            </tr>
+            @foreach (var topic in topicGroup.Topics)
+            {
+                <tr>
+                    <td class="topic-col">
+                        <a href="@Url.Action("Topic", new {id = topic.Id})" class="text-dark">
+                            <h4>@topic.Title</h4>
+                            <div>@Html.Raw(topic.Info)</div>
+                        </a>
+                    </td>
+                    <td>@topic.Discussions.Count</td>
+                    <td>@topic.Discussions.Sum(d => d.Contributions.Count)</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+}

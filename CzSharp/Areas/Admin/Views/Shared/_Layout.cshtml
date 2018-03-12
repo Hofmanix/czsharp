@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc
+﻿@using CzSharp.Utils.Extensions
+@using Microsoft.AspNetCore.Mvc
 @using Microsoft.AspNetCore.Mvc.Rendering
 <!DOCTYPE html>
 <html>
@@ -7,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] | Admin | Cz#.NET</title>
 
-    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome-all.css"/>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -20,38 +22,42 @@
         </button>
         <div class="collapse navbar-collapse" id="mainMenu">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "Overview")">Přehled</a>
+                <li class="nav-item @Html.IsActive("Index", "Overview", "Admin")">
+                    <a class="nav-link" href="@Url.Action("Index", "Overview")"><i class="fa fa-tachometer-alt"></i> Přehled</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "Blog")">Blog</a>
+                <li class="nav-item" @Html.IsActive("Index", "Blog", "Admin")>
+                    <a class="nav-link" href="@Url.Action("Index", "Blog")"><i class="far fa-newspaper"></i> Blog</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "Actions")">Kalendář akcí</a>
+                <li class="nav-item @Html.IsActive("Index", "Actions", "Admin")">
+                    <a class="nav-link" href="@Url.Action("Index", "Actions")"><i class="far fa-calendar"></i> Kalendář akcí</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "Forum")">Forum</a>
+                <li class="nav-item @Html.IsActive("Index", "Forum", "Admin")">
+                    <a class="nav-link" href="@Url.Action("Index", "Forum")"><i class="far fa-comments"></i> Forum</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "Collaborations")">Spolupráce</a>
+                <li class="nav-item @Html.IsActive("Index", "Collaborations", "Admin")">
+                    <a class="nav-link" href="@Url.Action("Index", "Jobs")"><i class="fa fa-code-branch"></i> Spolupráce</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "Users")">Uživatelé</a>
+                <li class="nav-item @Html.IsActive("Index", "Users", "Admin")">
+                    <a class="nav-link" href="@Url.Action("Index", "Users")"><i class="fa fa-users"></i> Uživatelé</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="modal" data-target="login-modal" href="#" id="login-button">Přihlásit se</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="modal" data-target="registration-modal" href="#" id="registration-button">Zaregistrovat se</a>
+                    <a class="nav-link" href="@Url.Action("Logout", "Users")"><i class="fa fa-sign-out-alt"></i> Odhlásit se</a>
                 </li>
             </ul>
         </div>
     </nav>
     <div class="container body-content">
+        @if (!string.IsNullOrWhiteSpace(TempData["SuccessMessage"] as string))
+        {
+            <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                @TempData["SuccessMessage"]
+            </div>
+        }
         @RenderBody()
-        <hr />
+        <hr/>
         <footer>
             <p>&copy; 2018 - CzSharp</p>
         </footer>
@@ -60,6 +66,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     @RenderSection("Scripts", required: false)
+    <script src="~/js/bridge.min.js"></script>
     <script src="~/js/scripts.min.js" asp-append-version="true"></script>
     
 </body>

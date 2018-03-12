@@ -1,0 +1,44 @@
+﻿@using System.Linq
+@using CzSharp.Model.Entities
+@model CzSharp.Model.Entities.Blog.Article
+
+@{
+    ViewBag.Title = @Model.Title;
+}
+
+@section Styles
+{ 
+    <link rel="stylesheet" href="~/lib/prism/prism.css"/>
+}
+
+@if (User.Identity.IsAuthenticated && ((Model.User != null && Model.User.UserName == User.Identity.Name) || User.IsInRole(UserRole.Administrator)))
+{
+    <div class="float-right mt-2">
+        <a class="mr-2" href="@Url.Action("Edit", new {id = Model.Id})">
+            <i class="fa fa-pencil-alt"></i> Upravit
+        </a>
+        <a href="@Url.Action("Delete", new {id = Model.Id})" data-confirm="Určitě chcete tento článek odstranit?">
+            <i class="fa fa-trash-alt"></i> Odstranit
+        </a>
+    </div>
+}
+
+<h2 class="mt-2 mb-2" id="title">@Model.Title</h2>
+<div id="content">
+    @Html.Raw(Model.Content)
+</div>
+<div class="row mb-2 justify-content-end">
+    <span class="badge badge-info mr-2"><i class="far fa-clock"></i> @Model.Created</span>
+    <span class="badge badge-primary"><i class="far fa-user"></i> @Model.User?.UserName</span>
+</div>
+<div id="tags" class="row justify-content-end">
+    @foreach (var tag in Model.ArticleTags.Select(t => t.Tag))
+    {
+        <span class="badge badge-info">@tag.Title</span>
+    }
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/prism/prism.js"></script>
+}

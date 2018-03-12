@@ -1,0 +1,27 @@
+﻿@model DiscussionViewModel
+
+@{
+    ViewBag.Title = @Model.Discussion.Title;
+    Layout = "_Layout";
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/lib/prism/prism.css"/>
+}
+
+<h2>@Model.Discussion.Title</h2>
+
+<table class="table">
+    @foreach (var contribution in Model.Discussion.Contributions)
+    {
+        <tr>
+            <td class="contribution-user-info">@contribution.User.UserName</td>
+            <td>@Html.Raw(contribution.Content)</td>
+        </tr>
+    }
+</table>
+
+@section Scripts{
+    <script src="~/lib/prism/prism.js"></script>
+}

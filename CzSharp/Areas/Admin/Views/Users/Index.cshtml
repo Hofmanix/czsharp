@@ -31,7 +31,22 @@
                     <span class="badge badge-warning">Neaktvní</span>
                 }
             </td>
-            <td></td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    @if (!user.User.EmailConfirmed)
+                    {
+                        <a class="btn btn-success text-light" data-toggle="tooltip" title="Potvrdit email" href="@Url.Action("Activate", new { id = user.User.Id})">
+                            <i class="fa fa-unlock-alt"></i>
+                        </a>
+                    }
+                    <a class="btn btn-primary text-light" data-toggle="tooltip" title="Upravit">
+                        <i class="fa fa-pencil-alt"></i>
+                    </a>
+                    <a class="btn btn-danger text-light" data-toggle="tooltip" title="Odstranit" data-confirm="Opravdu chcete odstranit tohoto uživatele?" href="@Url.Action("Delete", new { id = user.User.Id })">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
+            </td>
         </tr>
     }
 </table>
