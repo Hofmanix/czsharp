@@ -26,18 +26,31 @@ namespace CzSharp.Controllers
             this.tagsService = tagsService;
             this.userManager = userManager;
         }
-        
+        /// <summary>
+        /// Returns page with calendar, events are downloaded asynchronously by javascript
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Shows page for creating new event, only for event creators
+        /// </summary>
+        /// <returns></returns>
         [HttpGet, Authorize(Policy = Polices.EventCreators)]
         public IActionResult Create()
         {
             return View();
         }
 
+        /// <summary>
+        /// Returns event defined by the dates range
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         public IActionResult Range(DateTime start, DateTime end)
         {
             return Json(eventsRepository.GetRange(start, end)
@@ -51,6 +64,11 @@ namespace CzSharp.Controllers
                 }));
         }
 
+        /// <summary>
+        /// Returns event page specified by the detail
+        /// </summary>
+        /// <param name="id">Id of the event</param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
@@ -64,6 +82,11 @@ namespace CzSharp.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Creates new event specified by the model, only for event creators
+        /// </summary>
+        /// <param name="model">Model with new event params</param>
+        /// <returns></returns>
         [HttpPost, Authorize(Policy = Polices.EventCreators)]
         public async Task<IActionResult> Create(EventViewModel model)
         {

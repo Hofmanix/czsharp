@@ -18,7 +18,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\" />
-    <Folder Include="Migrations" />
     <Folder Include="MODEL" />
     <Folder Include="Utils\TagHelpers" />
     <Folder Include="wwwroot\js\" />

@@ -1,4 +1,5 @@
-﻿@model CzSharp.Model.Entities.Event
+﻿@using CzSharp.Model.Entities
+@model CzSharp.Model.Entities.Event
 
 @{
     ViewBag.Title = @Model.Title;
@@ -23,3 +24,12 @@
         <span class="badge badge-info">@tag.Title</span>
     }
 </div>
+
+@Html.Partial("_CommentsPartial", new CommentsViewModel
+{
+    Comments = Model.Comments,
+    NewComment = new Comment
+    {
+        EventId = Model.Id
+    }
+})

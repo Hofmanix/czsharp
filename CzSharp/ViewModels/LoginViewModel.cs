@@ -2,6 +2,9 @@
 
 namespace CzSharp.ViewModels
 {
+    /// <summary>
+    /// View model for login
+    /// </summary>
     public class LoginViewModel
     {
         [Required]

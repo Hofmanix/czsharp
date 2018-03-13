@@ -1,0 +1,53 @@
+﻿@using CzSharp.Utils.Extensions
+@model CommentsViewModel
+<div class="mt-2">
+    @if (Model.Comments?.Count > 0)
+    {
+        <div id="comments">
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="card">
+                    <div class="card-body p-2">
+                        @comment.User.UserName
+                        <br/>
+                        <small>@comment.Created</small>
+                        <hr class="mt-1 mb-1"/>
+                        @comment.Content
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">Zatím nebyl přidán žádný komentář.</div>
+    }
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        using (Html.BeginForm(FormMethod.Post, new {id = "new-comment", @class = "mt-2"}))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.NewComment.Content)
+                @Html.TextAreaFor(m => m.NewComment.Content, new {@class = "form-control"})
+            </div>
+            if (Model.NewComment.ArticleId != null && Model.NewComment.ArticleId != 0)
+            {
+                @Html.HiddenFor(m => m.NewComment.ArticleId)
+            }
+            if (Model.NewComment.CodeId != null && Model.NewComment.CodeId != 0)
+            {
+                @Html.HiddenFor(m => m.NewComment.CodeId)
+            }
+            if (Model.NewComment.EventId != null && Model.NewComment.EventId != 0)
+            {
+                @Html.HiddenFor(m => m.NewComment.EventId)
+            }
+            <button class="btn btn-info" type="submit">Přidat komentář</button>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">Pro psaní komentářů se prosím přihlašte.</div>
+    }
+</div>

@@ -10,6 +10,7 @@ using CzSharp.Model.Repositories.Blog;
 using CzSharp.Services;
 using CzSharp.Utils.Extensions;
 using CzSharp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -55,7 +56,7 @@ namespace CzSharp.Controllers
             });
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Policy = Polices.Bloggers)]
         public async Task<IActionResult> Create()
         {
             return View(new ArticleViewModel
@@ -73,7 +74,7 @@ namespace CzSharp.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Policy = Polices.Bloggers)]
         public async Task<IActionResult> Create(ArticleViewModel model)
         {
             if (ModelState.IsValid)
@@ -110,7 +111,7 @@ namespace CzSharp.Controllers
             });
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Policy = Polices.Bloggers)]
         public async Task<IActionResult> Edit(int id)
         {
             if (User.Identity.IsAuthenticated)
@@ -142,6 +143,7 @@ namespace CzSharp.Controllers
             return RedirectToAction("Detail", new {id});
         }
 
+        [HttpPost, Authorize(Policy = Polices.Bloggers)]
         public async Task<IActionResult> Edit(ArticleViewModel model)
         {
             var tags = new List<Tag>();
@@ -173,24 +175,42 @@ namespace CzSharp.Controllers
             return NotFound();
         }
 
+        [HttpGet, Authorize(Policy = Polices.Bloggers)]
         public async Task<IActionResult> Delete(int id)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                var article = await articlesRepository.FindByIdAsync(id);
-                var user = await userManager.GetUserAsync(User);
+            var article = await articlesRepository.FindByIdAsync(id);
+            var user = await userManager.GetUserAsync(User);
 
-                if ((article.User != null && article.User.Id == user.Id) || User.IsInRole(UserRole.Administrator))
-                {
-                    await articlesRepository.DeleteAsync(article);
-                
-                    TempData.AddSuccessMessage("Článek byl odstraněn");
-                    return RedirectToAction("Index");
-                }
+            if ((article.User != null && article.User.Id == user.Id) || User.IsInRole(UserRole.Administrator))
+            {
+                await articlesRepository.DeleteAsync(article);
+            
+                TempData.AddSuccessMessage("Článek byl odstraněn");
+                return RedirectToAction("Index");
             }
             
             TempData.AddErrorMessage("Nemáte dostatečná oprávnění pro odstranění tohoto článku.");
             return RedirectToAction("Detail", new {id});
+        }
+
+        [HttpPost, Authorize(Policy = Polices.SeniorBloggers)]
+        public async Task<IActionResult> CreateCategory(Category category)
+        {
+            if (string.IsNullOrWhiteSpace(category.Title))
+            {
+                return BadRequest("Zadejte název kategorie.");
+            }
+
+            if (await categoriesRepository.FindByTitleAsync(category.Title) != null)
+            {
+                return BadRequest("Kategorie s tímto názvem již existuje.");
+            }
+
+            category.Created = DateTime.Now;
+            category.User = await userManager.GetUserAsync(User);
+
+            await categoriesRepository.CreateAsync(category);
+            return Json(category);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace CzSharp.Model.Entities
         public DateTime Created { get; set; }
         
         public virtual ICollection<EventTag> EventTags { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
 
     }
 }

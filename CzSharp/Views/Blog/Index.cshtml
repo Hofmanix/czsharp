@@ -17,10 +17,7 @@
     {
         <a class="list-group-item border-left-0 border-right-0 text-dark" href="@Url.Action("Detail", new {id = article.Id})">
             <div class="row">
-                <div class="col-3">
-                    <img class="img-thumbnail rounded"/>
-                </div>
-                <div class="col-9">
+                <div class="col-12">
                     <h3 class="article-title">@article.Title</h3>
                     <div class="article-content-preview">
                         @Html.Raw(article.Content)

@@ -5,6 +5,9 @@ namespace WebScripts.DateTimePicker
 {
     public class DatePickers
     {
+        /// <summary>
+        /// Creates datetimepickers at all elements with data-editor=bootstrap-datepicker
+        /// </summary>
         public DatePickers()
         {
             var pickers = jquery.jQuery.@select("[data-editor='bootstrap-datepicker']");

@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CzSharp.ViewModels
 {
+    /// <summary>
+    /// View model for article creation
+    /// </summary>
     public class ArticleViewModel
     {
         public Article Article { get; set; }

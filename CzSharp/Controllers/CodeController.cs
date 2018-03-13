@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CzSharp.Controllers
 {
+    /// <summary>
+    /// Controller for codes
+    /// </summary>
     public class CodeController: BaseController
     {
         private ITagsService tagsService;
@@ -26,6 +29,11 @@ namespace CzSharp.Controllers
             this.userManager = userManager;
         }
         
+        /// <summary>
+        /// Returns page with codes ordered by id desc, selected by the page attribute
+        /// </summary>
+        /// <param name="page">attribute for codes range</param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Index(int page = 1)
         {
@@ -37,7 +45,11 @@ namespace CzSharp.Controllers
             });
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Returns page for creating new code, only for Administrators and Coders
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Authorize(Policy = Polices.Coders)]
         public IActionResult Create()
         {
             return View(new CodeViewModel
@@ -46,6 +58,11 @@ namespace CzSharp.Controllers
             });
         }
 
+        /// <summary>
+        /// Creates new code, saves it to db and returns code detail page
+        /// </summary>
+        /// <param name="model">Model with code data</param>
+        /// <returns></returns>
         [HttpPost, Authorize(Policy = Polices.Coders)]
         public async Task<IActionResult> Create(CodeViewModel model)
         {
@@ -66,7 +83,7 @@ namespace CzSharp.Controllers
                 code.Created = DateTime.Now;
 
                 await codeRepository.CreateAsync(code);
-                return RedirectToAction("Index");
+                return RedirectToAction("Detail", new {id = code.Id});
             }
             Console.WriteLine(ModelState.ErrorCount);
             
@@ -75,6 +92,11 @@ namespace CzSharp.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Shows code detail selected by id
+        /// </summary>
+        /// <param name="id">id of detail to show</param>
+        /// <returns></returns>
         public async Task<IActionResult> Detail(int id)
         {
             var code = await codeRepository.FindByIdAsync(id);

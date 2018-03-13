@@ -161,6 +161,7 @@ namespace CzSharp
             services.AddScoped<IArticlesRepository, ArticlesRepository>();
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             services.AddScoped<ICodeRepository, CodeRepository>();
+            services.AddScoped<ICommentsRepository, CommentsRepository>();
             services.AddScoped<IEventsRepository, EventsRepository>();
             services.AddScoped<ITagsRepository, TagsRepository>();
 

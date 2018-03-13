@@ -11,6 +11,9 @@ namespace WebScripts.TinyMce
             InitEditor();
         }
         
+        /// <summary>
+        /// Creates tinymce editors on all textareas with data-editor=tinymce
+        /// </summary>
         private void InitEditor()
         {
             try

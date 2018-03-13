@@ -8,6 +8,9 @@ namespace WebScripts
     {
         private static string aceEditorSelector = "div[data-editor='ace']";
         
+        /// <summary>
+        /// Creates ace editors from all divs with data-editor=ace
+        /// </summary>
         public AceEditor()
         {
             try

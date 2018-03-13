@@ -6,6 +6,9 @@ using CzSharp.Model.Entities;
 
 namespace CzSharp.ViewModels
 {
+    /// <summary>
+    /// View model for forum index, topics and topic groups creation
+    /// </summary>
     public class ForumIndexViewModel
     {
         public IQueryable<TopicGroup> TopicGroups { get; set; }

@@ -2,6 +2,9 @@
 
 namespace CzSharp.ViewModels
 {
+    /// <summary>
+    /// View model for account creation
+    /// </summary>
     public class RegistrationViewModel
     {
         [Required(ErrorMessage = "Musíte vyplnit uživatelské jméno")]

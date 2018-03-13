@@ -40,7 +40,10 @@ namespace CzSharp.Controllers
             this.tagsService = tagsService;
         }
         
-        // GET
+        /// <summary>
+        /// Returns page with base forum topic groups and topics
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View(new ForumIndexViewModel
@@ -49,6 +52,11 @@ namespace CzSharp.Controllers
             });
         }
 
+        /// <summary>
+        /// Returns topic specified by id
+        /// </summary>
+        /// <param name="id">topic id</param>
+        /// <returns></returns>
         public async Task<IActionResult> Topic(int id)
         {
             var topic = await topicsRepository.FindByIdAsync(id);
@@ -59,12 +67,21 @@ namespace CzSharp.Controllers
             });
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Bad page access - redirect to index
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Authorize(Policy = Polices.Moderators)]
         public IActionResult CreateTopicGroup()
         {
             return RedirectToAction("Index");
         }
-
+        
+        /// <summary>
+        /// Creates new topic group - only for moderators
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost, Authorize(Policy = Polices.Moderators)]
         public async Task<IActionResult> CreateTopicGroup(ForumIndexViewModel model)
         {
@@ -91,6 +108,11 @@ namespace CzSharp.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Creates new topic - only for moderators
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost, Authorize(Policy = Polices.Moderators)]
         public async Task<IActionResult> CreateTopic(ForumIndexViewModel model)
         {
@@ -139,13 +161,22 @@ namespace CzSharp.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Bad page access, redirect to index
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult CreateDiscussion()
         {
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
+        /// <summary>
+        /// Creates new discussion specified by parameters
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost, Authorize]
         public async Task<IActionResult> CreateDiscussion(TopicViewModel model)
         {
             var tags = new List<Tag>();
@@ -164,8 +195,6 @@ namespace CzSharp.Controllers
 
             if (string.IsNullOrWhiteSpace(model.Contribution.Content))
             {
-                ModelState.AddModelError<TopicViewModel>(m => m.Contribution.Content, "Zadejte příspěvek.");
-                return View("Topic", model);
             }
 
             var user = await userManager.GetUserAsync(User);
@@ -189,12 +218,43 @@ namespace CzSharp.Controllers
             return RedirectToAction("Discussion", new {id = model.Discussion.Id});
         }
 
+        /// <summary>
+        /// Returns discussion specified by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Discussion(int id)
         {
+            var discussion = await discussionsRepository.FindByIdAsync(id);
             return View(new DiscussionViewModel
             {
-                Discussion = await discussionsRepository.FindByIdAsync(id)
+                Discussion = discussion,
+                DiscussionId = discussion.Id
             });
+        }
+
+        /// <summary>
+        /// Creates new contribution to the discussion, everyting specified in the model
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost, Authorize]
+        public async Task<IActionResult> CreateContribution(DiscussionViewModel model)
+        {
+            model.Discussion = await discussionsRepository.FindByIdAsync(model.DiscussionId);
+            if (string.IsNullOrWhiteSpace(model.Contribution.Content))
+            {
+                ModelState.AddModelError<TopicViewModel>(m => m.Contribution.Content, "Zadejte příspěvek.");
+                return View("Discussion", model);
+            }
+
+            model.Contribution.Discussion = model.Discussion;
+            model.Contribution.Created = DateTime.Now;
+            model.Contribution.User = await userManager.GetUserAsync(User);
+
+            await contributionsRepository.CreateAsync(model.Contribution);
+
+            return RedirectToAction("Discussion", new {id = model.DiscussionId});
         }
     }
 }

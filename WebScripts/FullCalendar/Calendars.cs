@@ -13,6 +13,9 @@ namespace WebScripts.FullCalendar
             InitCalendar();
         }
         
+        /// <summary>
+        /// Inits small calendar at the side
+        /// </summary>
         private void InitSmallCalendar()
         {
             var calendar = jquery.jQuery.@select("#small-calendar");
@@ -29,6 +32,9 @@ namespace WebScripts.FullCalendar
             }
         }
 
+        /// <summary>
+        /// Inits big calendar at events page
+        /// </summary>
         private void InitCalendar()
         {
             var calendar = jquery.jQuery.@select("#calendar");

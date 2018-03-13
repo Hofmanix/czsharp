@@ -1,4 +1,5 @@
-﻿@model DiscussionViewModel
+﻿@using CzSharp.Utils.Extensions
+@model DiscussionViewModel
 
 @{
     ViewBag.Title = @Model.Discussion.Title;
@@ -9,19 +10,45 @@
 {
     <link rel="stylesheet" href="~/lib/prism/prism.css"/>
 }
-
 <h2>@Model.Discussion.Title</h2>
 
 <table class="table">
     @foreach (var contribution in Model.Discussion.Contributions)
     {
         <tr>
-            <td class="contribution-user-info">@contribution.User.UserName</td>
+            <td class="contribution-user-info">
+                <div class="text-center">@contribution.User.UserName</div>
+                <div class="small text-center">@contribution.Created</div>
+            </td>
             <td>@Html.Raw(contribution.Content)</td>
         </tr>
     }
 </table>
 
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="card">
+        <div class="card-header">Nový příspěvek</div>
+        <div class="card-body">
+            @using (Html.BeginForm("CreateContribution", "Forum", FormMethod.Post))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Contribution.Content)
+                    @Html.TinyMceFor(m => m.Contribution.Content, 200)
+                    <div class="invalid-feedback">@Html.ValidationMessageFor(m => m.Contribution.Content)</div>
+                </div>
+                @Html.HiddenFor(m => m.DiscussionId)
+                <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> Přidat příspěvek</button>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">Pro přidávání příspěvků se prosím přihlašte</div>
+}
+
 @section Scripts{
     <script src="~/lib/prism/prism.js"></script>
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
 }

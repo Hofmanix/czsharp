@@ -13,9 +13,10 @@ using Microsoft.EntityFrameworkCore.Storage.Internal.Mapping;
 namespace CzSharp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180313143825_migration22")]
+    partial class migration22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

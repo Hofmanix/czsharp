@@ -10,21 +10,56 @@ namespace CzSharp.Model
 {
     public class AppDbContext: IdentityDbContext<User, UserRole, int>
     {
+        /// <summary>
+        /// Articles table
+        /// </summary>
         public DbSet<Article> Articles { get; set; }
+        /// <summary>
+        /// Categories table
+        /// </summary>
         public DbSet<Category> Categories { get; set; }
+        /// <summary>
+        /// Codes table
+        /// </summary>
         public DbSet<Code> Codes { get; set; }
+        /// <summary>
+        /// Contributions table
+        /// </summary>
         public DbSet<Contribution> Contributions { get; set; }
+        /// <summary>
+        /// Discussions table
+        /// </summary>
         public DbSet<Discussion> Discussions { get; set; }
+        /// <summary>
+        /// Events table
+        /// </summary>
         public DbSet<Event> Events { get; set; }
+        /// <summary>
+        /// Tags table
+        /// </summary>
         public DbSet<Tag> Tags { get; set; }
+        /// <summary>
+        /// Topics table
+        /// </summary>
         public DbSet<Topic> Topics { get; set; }
+        /// <summary>
+        /// Topic groups table
+        /// </summary>
         public DbSet<TopicGroup> TopicGroups { get; set; }
+        /// <summary>
+        /// Comments table
+        /// </summary>
+        public DbSet<Comment> Comments { get; set; }
         
         public AppDbContext(DbContextOptions<AppDbContext> context)
             : base(context)
         {
         }
 
+        /// <summary>
+        /// Creating model with many-to-many relationships
+        /// </summary>
+        /// <param name="builder"></param>
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

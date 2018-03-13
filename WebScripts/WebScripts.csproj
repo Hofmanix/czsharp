@@ -27,6 +27,8 @@
   <ItemGroup>
     <Compile Include="AceEditor.cs" />
     <Compile Include="App.cs" />
+    <Compile Include="Categories.cs" />
+    <Compile Include="Comments.cs" />
     <Compile Include="Confirms.cs" />
     <Compile Include="DateTimePicker\DatePickers.cs" />
     <Compile Include="DateTimePicker\DateTimePickerExtensions.cs" />

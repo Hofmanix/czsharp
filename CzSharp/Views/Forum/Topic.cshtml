@@ -16,7 +16,7 @@
         <button class="btn btn-sm btn-info text-light mr-1" data-toggle="collapse" data-target="#new-discussion"><i class="fa fa-plus"></i> Přidat diskusi</button>
     </div>
     
-    <div class='collapse m-2 @(Context.Request.Path.Value.Contains("createtopicgroup") ? "show" : "")' id="new-discussion">
+    <div class='collapse m-2 @(Context.Request.Path.Value.Contains("creatediscussion") ? "show" : "")' id="new-discussion">
         <div class="card">
             <div class="card-header">Nová diskuse</div>
             <div class="card-body">
@@ -43,7 +43,6 @@
         </div>
     </div>
 }
-@Model.Topic.Id
 <h2>@Model.Topic.Title</h2>
 <table class="table">
     <tr>
@@ -55,7 +54,11 @@
     {
         var lastCont = discussion.Contributions.OrderBy(d => d.Id).Last();
         <tr>
-            <td>@discussion.Title</td>
+            <td>
+                <a href="@Url.Action("Discussion", new {id = discussion.Id})" class="text-dark">
+                    <h5>@discussion.Title</h5>
+                </a>
+            </td>
             <td>@discussion.Contributions.Count</td>
             <td class="align-center">
                 <small>

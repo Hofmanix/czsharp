@@ -8,6 +8,14 @@ namespace CzSharp.Utils.Extensions
 {
     public static class HtmlHelperExtensions
     {
+        /// <summary>
+        /// Checks if specified url is active
+        /// </summary>
+        /// <param name="html">Current html object</param>
+        /// <param name="action">Path action</param>
+        /// <param name="controller">Path controller</param>
+        /// <param name="area">Path area</param>
+        /// <returns></returns>
         public static string IsActive(this IHtmlHelper<dynamic> html, string action = null, string controller = null, string area = null)
         {
             var routeData = html.ViewContext.RouteData;
@@ -21,12 +29,30 @@ namespace CzSharp.Utils.Extensions
             return isActive ? "active" : "";
         }
 
+        /// <summary>
+        /// Creates tinymce editor, working with Tinymce in WebScripts
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="expression"></param>
+        /// <param name="height"></param>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
         public static IHtmlContent TinyMceFor<TModel, TResult>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TResult>> expression, int height = 400)
         {
             return html.TextAreaFor(expression, new { @data_editor = "tinymce", @data_height= height });
         }
         
+        /// <summary>
+        /// Creates ace editor - working with Ace in WebScripts
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="expression"></param>
+        /// <param name="readOnly"></param>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
         public static IHtmlContent AceEditorFor<TModel, TResult>(this IHtmlHelper<TModel> html, Expression<Func<TModel, TResult>> expression, bool readOnly = false)
         {
             var builder = new TagBuilder("div");
@@ -35,7 +61,15 @@ namespace CzSharp.Utils.Extensions
             editor.Attributes.Add("data-editor", "ace");
             editor.Attributes.Add("data-for", ExpressionHelper.GetExpressionText(expression));
             editor.Attributes.Add("data-readonly", readOnly.ToString().ToLower());
-            editor.InnerHtml.Append(expression.Compile()(html.ViewData.Model).ToString());
+
+            try
+            {
+                editor.InnerHtml.Append(expression.Compile()(html.ViewData.Model).ToString());
+            }
+            catch (NullReferenceException)
+            {
+                // Nothing in data, not filling
+            }
 
             builder.InnerHtml.AppendHtml(editor);
             builder.InnerHtml.AppendHtml(html.TextAreaFor(expression, new {@style="display: none;"}));
@@ -43,6 +77,14 @@ namespace CzSharp.Utils.Extensions
             return builder;
         }
 
+        /// <summary>
+        /// Creates bootstrap datepicker - working with WebScripts DateTimePicker
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="expression"></param>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
         public static IHtmlContent DatePickerFor<TModel, TResult>(this IHtmlHelper<TModel> html,
             Expression<Func<TModel, TResult>> expression)
         {

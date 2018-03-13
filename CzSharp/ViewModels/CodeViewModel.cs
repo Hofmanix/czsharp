@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CzSharp.ViewModels
 {
+    /// <summary>
+    /// View model for code creation
+    /// </summary>
     public class CodeViewModel
     {
         public Code Code { get; set; }

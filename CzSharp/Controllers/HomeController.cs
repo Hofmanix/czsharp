@@ -10,22 +10,12 @@ namespace CzSharp.Controllers
 {
     public class HomeController : BaseController
     {
+        /// <summary>
+        /// Basic home page with some basic info
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 

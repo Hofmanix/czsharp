@@ -29,7 +29,7 @@
         @Html.LabelFor(a => a.Article.Category)
         @if(User.IsInRole(UserRole.Administrator) || User.IsInRole(UserRole.SeniorBlogger))
         {
-            <a class="float-right" href="#"><i class="fa fa-plus"></i> Přidat kategorii</a>
+            <button type="button" class="btn btn-link float-right" data-toggle="modal" data-target="#new-category-modal"><i class="fa fa-plus"></i> Přidat kategorii</button>
         }
         @Html.DropDownListFor(a => a.Article.Category, Model.Categories,new {  @class="form-control" })
         <div class="invalid-feedback">@Html.ValidationMessageFor(a => a.Article.Content)</div>
@@ -42,6 +42,23 @@
         @(Model.Article == null ? Html.Raw("<i class='fa fa-plus'></i> Přidat") : Html.Raw("<i class='fa fa-pencil'></i> Upravit"))
     </button>
 }
+
+<div class="modal fade" tabindex="-1" role="dialog" id="new-category-modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">Nová kategorie</div>
+            <div class="modal-body">
+                <form id="create-category">
+                    <div class="form-group">
+                        <label for="Title"></label>
+                        <input type="text" id="Title" name="Title" class="form-control"/>
+                    </div>
+                    <button class="btn btn-info" type="submit"><i class="fa fa-plus"></i> Přidat kategorii</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
     
 @section Scripts{
     <script src="~/lib/prism/prism.js"></script>

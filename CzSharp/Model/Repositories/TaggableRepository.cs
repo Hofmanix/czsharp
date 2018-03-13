@@ -36,10 +36,5 @@ namespace CzSharp.Model.Repositories
                 await DbContext.SaveChangesAsync();
             }
         }
-
-        public Task UpdateWithTags(T entity, List<Tag> tags)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

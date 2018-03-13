@@ -4,6 +4,9 @@ using Validator = Retyped.jquery_validation.JQueryValidation.Validator;
 
 namespace WebScripts
 {
+    /// <summary>
+    /// Forms validators
+    /// </summary>
     public class Forms
     {
         public Forms()

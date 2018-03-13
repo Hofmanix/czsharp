@@ -1,4 +1,5 @@
-﻿@using CzSharp.Utils.Extensions
+﻿@using CzSharp.Model.Entities
+@using CzSharp.Utils.Extensions
 @model CzSharp.Model.Entities.Code
 
 @{
@@ -19,6 +20,16 @@
         <span class="badge badge-info">@tag</span>
     }
 </div>
+
+@Html.Partial("_CommentsPartial", new CommentsViewModel
+{
+    Comments = Model.Comments,
+    NewComment = new Comment()
+    {
+        CodeId = Model.Id
+    }
+})
+
 @section Scripts {
     <script src="~/lib/ace/ace.js"></script>
 }

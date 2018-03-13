@@ -16,6 +16,11 @@ namespace CzSharp.Services
             this.tagsRepository = tagsRepository;
         }
 
+        /// <summary>
+        /// Parses tags given from tags input
+        /// </summary>
+        /// <param name="tagsStr"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Tag>> ParseTags(string tagsStr)
         {
             Console.WriteLine(tagsStr);
@@ -31,6 +36,11 @@ namespace CzSharp.Services
             return tags;
         }
 
+        /// <summary>
+        /// Finds already created tag or creates new one
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
         public async Task<Tag> FindOrCreate(string title)
         {
             var tag = await tagsRepository.FindByTitleAsync(title);

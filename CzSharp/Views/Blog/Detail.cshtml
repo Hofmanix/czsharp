@@ -38,7 +38,17 @@
     }
 </div>
 
+@Html.Partial("_CommentsPartial", new CommentsViewModel
+{
+    Comments = Model.Comments,
+    NewComment = new Comment
+    {
+        ArticleId = Model.Id
+    }
+})
+
 @section Scripts
 {
     <script src="~/lib/prism/prism.js"></script>
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
 }

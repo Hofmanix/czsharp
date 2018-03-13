@@ -20,6 +20,7 @@ namespace CzSharp.Model.Entities.Blog
         public virtual Category Category { get; set; }
 
         public virtual ICollection<ArticleTag> ArticleTags { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
 
         public Article()
         {

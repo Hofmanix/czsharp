@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CzSharp.Model.Entities;
 using CzSharp.Services;
+using CzSharp.Utils.Extensions;
 using CzSharp.ViewModels;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -32,18 +35,31 @@ namespace CzSharp.Controllers
             this.emailSender = emailSender;
         }
 
+        /// <summary>
+        /// Shows page for login
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
+        /// <summary>
+        /// Shows page for registration
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult CreateAccount()
         {
             return View();
         }
 
+        /// <summary>
+        /// Logs user in by loginViewModel params
+        /// </summary>
+        /// <param name="loginViewModel">Parameters for login</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
@@ -60,13 +76,22 @@ namespace CzSharp.Controllers
             return View(loginViewModel);
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Logs user out
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Authorize]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
             return Redirect("/");
         }
 
+        /// <summary>
+        /// Creates new account specified by params
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateAccount(RegistrationViewModel viewModel)
         {
@@ -78,13 +103,14 @@ namespace CzSharp.Controllers
                     Email = viewModel.Email
                 };
                 var result = await usersManager.CreateAsync(user, viewModel.Password);
-                var generationToken = usersManager.GenerateEmailConfirmationTokenAsync(user);
-                var url = Url.Action("ConfirmEmail", "Users", new {userId = user.Id, token = generationToken});
+                var generationToken = await usersManager.GenerateEmailConfirmationTokenAsync(user);
+                var url = Url.Action("ConfirmEmail", "Users", new {userId = user.Id, token = generationToken}, "https", "czsharp.net");
                 await emailSender.SendEmailAsync(user.Email, "Confirm your account",  
                     $"Please confirm your account by clicking this link: <a href='{url}'>link</a>");
 
                 if (result.Succeeded)
                 {
+                    TempData.AddSuccessMessage("Váš účet byl vytvořen a na váš email byl odeslán email s aktivací, po potvrzení se budete moci přihlásit.");
                     return RedirectToAction("Login");
                 }
 
@@ -108,6 +134,12 @@ namespace CzSharp.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Confirms users email
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
@@ -117,7 +149,7 @@ namespace CzSharp.Controllers
 
             if (result.Succeeded)
             {
-                TempData["SuccessMessage"] = "Tvůj účet byl aktivován, nyní se můžeš příhlásit.";
+                TempData.AddSuccessMessage("Tvůj účet byl aktivován, nyní se můžeš příhlásit.");
                 return RedirectToAction("Login");
             }
             else
@@ -127,10 +159,15 @@ namespace CzSharp.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
 
-                return View("Index");
+                return View("Login");
             }
         }
 
+        /// <summary>
+        /// Shows user detail
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Detail(string id = null)
         {

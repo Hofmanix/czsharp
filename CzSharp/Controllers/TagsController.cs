@@ -14,18 +14,32 @@ namespace CzSharp.Controllers
             this.tagsRepository = tagsRepository;
         }
 
+        /// <summary>
+        /// Returns all tags as json
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> All()
         {
             return Json(tagsRepository.FindAll());
         }
 
+        /// <summary>
+        /// Returns tags specified by part of its title as json
+        /// </summary>
+        /// <param name="titlePart"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Find(string titlePart)
         {
             return Json(tagsRepository.FindByTitlePart(titlePart));
         }
 
+        /// <summary>
+        /// Returns one specific tag specified by full title
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Tag(string title)
         {

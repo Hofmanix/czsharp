@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CzSharp.ViewModels
 {
+    /// <summary>
+    /// View model for forum topic and discussion creation
+    /// </summary>
     public class TopicViewModel
     {
         public Topic Topic { get; set; }
